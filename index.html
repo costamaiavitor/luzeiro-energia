@@ -175,9 +175,119 @@ table.dados{width:100%;border-collapse:collapse;min-width:560px;font-size:.94rem
 .rodape dd{color:var(--texto-2)}
 .rodape .bt{margin-top:12px}
 .legal{margin-top:40px;padding-top:18px;border-top:1px solid var(--linha);font:400 .74rem/1.6 var(--mono);color:var(--texto-3)}
+
+/* ================= efeitos e transições ================= */
+main:focus{outline:none}
+.fx-barra{position:fixed;left:0;top:0;height:3px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:var(--fx);z-index:90;pointer-events:none}
+html.fx [data-revela]{opacity:0;transform:translate3d(0,34px,0);filter:blur(5px);transition:opacity .9s cubic-bezier(.16,.84,.24,1),transform .9s cubic-bezier(.16,.84,.24,1),filter .9s cubic-bezier(.16,.84,.24,1);transition-delay:var(--atraso,0s)}
+html.fx [data-revela="lado"]{transform:translate3d(-40px,0,0)}
+html.fx [data-revela="zoom"]{transform:scale(.93)}
+html.fx [data-revela="imprime"]{opacity:0;filter:none;transform:none;transition:opacity .01s,transform .5s cubic-bezier(.2,.7,.2,1)}
+html.fx [data-revela="imprime"].visto{opacity:1;animation:fx-imprime 1.3s cubic-bezier(.16,.84,.24,1) both;animation-delay:var(--atraso,0s)}
+@keyframes fx-imprime{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+html.fx [data-revela].visto{opacity:1;transform:none;filter:none}
+html.fx [data-entra]{opacity:0;transform:translate3d(0,30px,0);filter:blur(6px)}
+html.fx.pronto [data-entra]{opacity:1;transform:none;filter:none;transition:opacity 1.1s cubic-bezier(.16,.84,.24,1),transform 1.1s cubic-bezier(.16,.84,.24,1),filter 1.1s;transition-delay:var(--atraso,0s)}
+.topo{transition:transform .5s cubic-bezier(.2,.7,.2,1),box-shadow .4s ease}
+.topo.recolhido{transform:translateY(-115%)}
+.topo.rolou{box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.bt{position:relative;overflow:hidden;isolation:isolate;transition:transform .3s cubic-bezier(.2,.7,.2,1),background-color .3s,color .3s,box-shadow .3s,border-color .3s}
+@media (hover:hover){.bt:hover{transform:translateY(-2px);box-shadow:0 10px 24px -8px color-mix(in srgb,var(--fx) 60%,transparent)}}
+.bt:active{transform:scale(.97)}
+.onda{position:absolute;border-radius:50%;pointer-events:none;background:currentColor;opacity:.3;transform:translate(-50%,-50%) scale(0);animation:fx-onda .75s cubic-bezier(.2,.7,.2,1) forwards;z-index:0}
+@keyframes fx-onda{to{transform:translate(-50%,-50%) scale(1);opacity:0}}
+details{overflow:hidden}
+.fx-destaque{background-image:linear-gradient(var(--fx),var(--fx));background-repeat:no-repeat;background-size:0 3px;background-position:0 100%;animation:fx-sublinha 1.8s cubic-bezier(.16,.84,.24,1)}
+@keyframes fx-sublinha{0%{background-size:0 3px;background-position:0 100%}45%{background-size:100% 3px;background-position:0 100%}55%{background-size:100% 3px;background-position:100% 100%}100%{background-size:0 3px;background-position:100% 100%}}
+.inclina{transition:transform .6s cubic-bezier(.2,.7,.2,1);will-change:transform}
+html.fx .grafico .barra{transform:scaleY(0);transform-box:fill-box;transform-origin:50% 100%;transition:transform 1.1s cubic-bezier(.16,.84,.24,1),fill .25s;transition-delay:calc(var(--i,0) * 70ms)}
+html.fx .grafico.visto .barra{transform:none}
+html.intro-ativa,html.intro-ativa body{overflow:hidden}
+.tela-inicio{position:fixed;inset:0;z-index:100;display:grid;place-items:center;overflow:hidden}
+.tela-inicio .ti-demo{position:absolute;left:0;right:0;bottom:calc(10px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.7rem;opacity:.55;letter-spacing:.04em;z-index:3;padding-inline:16px}
+.ti-letras span{display:inline-block;transform:translateY(110%);opacity:0;animation:fx-letra .9s cubic-bezier(.16,.84,.24,1) forwards;animation-delay:calc(var(--atraso-base,0s) + var(--i) * 45ms)}
+.ti-letras{display:inline-flex;overflow:hidden;padding-bottom:.08em}
+@keyframes fx-letra{to{transform:none;opacity:1}}
+@keyframes fx-aparece{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  html.fx [data-revela],html.fx [data-entra]{transition-duration:.01s!important;transform:none!important;filter:none!important;clip-path:none!important}
+  .onda{display:none}
+  .topo.recolhido{transform:none}
+  .fx-destaque{animation:none}
+  .tela-inicio *,.tela-inicio{animation-duration:.01s!important;animation-delay:0s!important;transition-duration:.01s!important}
+  html.fx .grafico .barra{transform:none;transition:none}
+}
+
+/* ---- tela de início: a conta sendo impressa ---- */
+:root{--fx:var(--acento)}
+.tela-inicio{color:var(--texto)}
+.ti-metade{position:absolute;left:0;right:0;height:50.5%;transition:transform 1.15s cubic-bezier(.76,0,.24,1);z-index:0}
+.ti-metade.cima{top:0;background:radial-gradient(ellipse at 50% 100%,#16211C 0%,#090C0B 72%)}
+.ti-metade.baixo{bottom:0;background:radial-gradient(ellipse at 50% 0%,#16211C 0%,#090C0B 72%)}
+.tela-inicio.saindo .ti-metade.cima{transform:translateY(-100%)}
+.tela-inicio.saindo .ti-metade.baixo{transform:translateY(100%)}
+.tela-inicio.saindo .ti-demo{opacity:0;transition:opacity .3s}
+.ti-conteudo{position:relative;z-index:1;width:min(440px,100%);padding:24px 18px 52px;display:grid;justify-items:center;gap:16px;text-align:center;transition:opacity .45s ease,transform .75s cubic-bezier(.76,0,.24,1)}
+.tela-inicio.saindo .ti-conteudo{opacity:0;transform:translateY(-46px) scale(.93)}
+.ti-marca{display:flex;align-items:center;gap:10px;font:600 1.05rem/1 var(--sans);opacity:0;animation:fx-aparece .8s .15s cubic-bezier(.16,.84,.24,1) forwards}
+.impressora{width:min(320px,86vw)}
+.fenda{display:block;height:14px;border-radius:7px;background:#030504;box-shadow:inset 0 3px 6px #000,0 1px 0 rgba(255,255,255,.08);position:relative;z-index:2;opacity:0;animation:fx-aparece .6s .3s forwards}
+.papel-janela{overflow:hidden;margin:-7px 0 0;padding:0 12px 36px}
+.papel{background:var(--papel);color:var(--tinta);padding:18px 14px 14px;text-align:left;font:400 .78rem/1.35 var(--mono);transform:translateY(-102%);animation:ti-imprime 1.8s .6s cubic-bezier(.35,.55,.2,1) forwards;box-shadow:0 18px 34px rgba(0,0,0,.55)}
+@keyframes ti-imprime{0%{transform:translateY(-102%)}25%{transform:translateY(-78%)}30%{transform:translateY(-76%)}55%{transform:translateY(-40%)}60%{transform:translateY(-38%)}100%{transform:none}}
+.p-cab{display:flex;justify-content:space-between;gap:8px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding-bottom:8px;border-bottom:1.5px solid var(--tinta);font-size:.66rem}
+.p-l{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px dotted var(--papel-linha)}
+.p-l.cred{color:var(--verde-papel);max-height:0;padding-block:0;overflow:hidden;opacity:0;transition:max-height .6s cubic-bezier(.16,.84,.24,1),padding .6s,opacity .6s}
+.p-l.cred.on{max-height:40px;padding-block:6px;opacity:1}
+#ti-energia{transition:color .4s}
+#ti-energia.riscado{text-decoration:line-through;text-decoration-thickness:2px;color:var(--risco)}
+.p-t{display:flex;justify-content:space-between;align-items:baseline;margin-top:10px;padding:9px 10px;background:var(--papel-2)}
+.p-t span{font-weight:600;font-size:.64rem;letter-spacing:.06em;text-transform:uppercase}
+.p-t b{font:600 1.3rem/1 var(--mono);font-variant-numeric:tabular-nums;transition:color .5s}
+.p-t b.caiu{color:var(--verde-papel)}
+.p-selo{display:table;margin:12px 0 0 auto;border:2px solid var(--verde-papel);color:var(--verde-papel);padding:4px 8px;font:600 .68rem/1.2 var(--mono);letter-spacing:.05em;text-transform:uppercase;transform:rotate(-6deg) scale(2.4);opacity:0;transition:transform .5s cubic-bezier(.3,1.5,.5,1),opacity .25s}
+.p-selo.on{transform:rotate(-6deg) scale(1);opacity:1}
+.ti-tit{font:400 clamp(1.7rem,6.6vw,2.4rem)/1.1 var(--sans);letter-spacing:-.025em;opacity:0;transform:translateY(16px);transition:opacity .9s cubic-bezier(.16,.84,.24,1),transform .9s cubic-bezier(.16,.84,.24,1)}
+.ti-bt{opacity:0;transform:translateY(16px);transition:opacity .9s .15s cubic-bezier(.16,.84,.24,1),transform .9s .15s cubic-bezier(.16,.84,.24,1),background-color .3s}
+.tela-inicio.fase2 .ti-tit,.tela-inicio.fase2 .ti-bt{opacity:1;transform:none}
+.tela-inicio.fase2 .ti-bt{animation:ti-pulso 2.2s 1.2s ease-out infinite}
+@keyframes ti-pulso{0%{box-shadow:0 0 0 0 rgba(127,194,155,.55)}100%{box-shadow:0 0 0 18px rgba(127,194,155,0)}}
+
+/* ---- efeitos do site ---- */
+.abertura h1 b{background:linear-gradient(90deg,var(--acento) 0%,#D4F0DF 45%,var(--acento) 60%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:luz-brilho 5s linear infinite}
+@keyframes luz-brilho{from{background-position:100% 0}to{background-position:-120% 0}}
+.vistas{position:relative;isolation:isolate}
+.vistas::before{content:"";position:absolute;top:0;bottom:0;left:0;width:50%;background:var(--texto);transition:transform .5s cubic-bezier(.16,.84,.24,1);z-index:-1}
+.vistas[data-ativo="nova"]::before{transform:translateX(100%)}
+.vistas button{position:relative;transition:color .35s}
+.vistas button[aria-pressed="true"]{background:transparent;color:var(--fundo)}
+.resumo .forte dd{text-shadow:0 0 18px rgba(127,194,155,.35)}
+@media (prefers-reduced-motion:reduce){.abertura h1 b{animation:none;color:var(--acento);background:none}}
 </style>
 </head>
 <body>
+
+<div class="tela-inicio" id="tela-inicio" role="dialog" aria-modal="true" aria-labelledby="ti-tit">
+  <div class="ti-metade cima"></div><div class="ti-metade baixo"></div>
+  <div class="ti-conteudo">
+    <p class="ti-marca"><svg width="28" height="28" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="11" r="5.5" fill="#7FC29B"/><rect x="2" y="18" width="22" height="1.6" fill="#E7ECE9"/><rect x="6" y="21.5" width="14" height="1.6" fill="#E7ECE9"/></svg>Luzeiro Energia</p>
+    <div class="impressora" aria-hidden="true">
+      <span class="fenda"></span>
+      <div class="papel-janela"><div class="papel">
+        <p class="p-cab"><span>Conta de energia</span><span class="ref"></span></p>
+        <div class="p-l"><span>Energia elétrica</span><span id="ti-energia">362,00</span></div>
+        <div class="p-l"><span>Taxa mínima e iluminação</span><span>58,00</span></div>
+        <div class="p-l cred" id="ti-cred"><span>Créditos da usina solar</span><span>−15%</span></div>
+        <div class="p-t"><span id="ti-rot">Total</span><b id="ti-total">R$ 420,00</b></div>
+        <span class="p-selo" id="ti-selo"></span>
+      </div></div>
+    </div>
+    <h1 class="ti-tit" id="ti-tit">A mesma energia. Uma conta menor.</h1>
+    <button type="button" class="bt bt-claro ti-bt" id="ti-entrar">Ver quanto eu economizo</button>
+  </div>
+  <p class="ti-demo">Site de demonstração · empresa fictícia</p>
+</div>
+
 
 <div class="demo">Site de demonstração · empresa fictícia · valores de exemplo</div>
 
@@ -317,6 +427,169 @@ table.dados{width:100%;border-collapse:collapse;min-width:560px;font-size:.94rem
 </div></footer>
 
 <script>
+// ================= efeitos e transições (compartilhado) =================
+(function(){
+  const raiz = document.documentElement;
+  const reduz = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  window.fxReduz = reduz;
+  raiz.classList.add("fx");
+  if (document.getElementById("tela-inicio")) raiz.classList.add("intro-ativa");
+
+  // ---- rolagem suave: acelera, desliza e desacelera até o destino ----
+  let raf = 0;
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  function rolar(y, dur){
+    cancelAnimationFrame(raf);
+    if (reduz) { scrollTo(0, y); return; }
+    const ini = scrollY, d = y - ini, t0 = performance.now();
+    dur = dur || Math.min(1600, 650 + Math.abs(d) * .28);
+    const passo = t => { const p = Math.min(1, (t - t0) / dur); scrollTo(0, ini + d * ease(p)); raf = p < 1 ? requestAnimationFrame(passo) : 0; };
+    raf = requestAnimationFrame(passo);
+  }
+  ["wheel", "touchstart"].forEach(ev => addEventListener(ev, () => { cancelAnimationFrame(raf); raf = 0; }, {passive: true}));
+  window.fxRolar = rolar;
+  window.fxRolarAte = el => {
+    const topo = document.querySelector(".topo");
+    rolar(Math.max(0, el.getBoundingClientRect().top + scrollY - ((topo ? topo.offsetHeight : 0) + 14)));
+  };
+  function destacar(alvo){
+    const h = alvo.matches("section, footer, div") ? (alvo.querySelector("h2") || alvo) : alvo;
+    setTimeout(() => { h.classList.remove("fx-destaque"); void h.offsetWidth; h.classList.add("fx-destaque"); }, reduz ? 0 : 850);
+  }
+  window.fxDestacar = destacar;
+  document.addEventListener("click", e => {
+    const a = e.target.closest('a[href^="#"]'); if (!a) return;
+    const id = decodeURIComponent(a.getAttribute("href").slice(1));
+    const alvo = id ? document.getElementById(id) : null;
+    if (!alvo) return;
+    e.preventDefault();
+    if (alvo.tagName === "MAIN") { rolar(0); return; }
+    fxRolarAte(alvo); destacar(alvo);
+  });
+
+  // ---- barra de progresso e cabeçalho que se recolhe ao descer ----
+  const barra = document.createElement("div");
+  barra.className = "fx-barra"; barra.setAttribute("aria-hidden", "true"); document.body.append(barra);
+  const topo = document.querySelector(".topo");
+  let ultimo = scrollY, pedido = false;
+  addEventListener("scroll", () => {
+    if (pedido) return; pedido = true;
+    requestAnimationFrame(() => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      barra.style.transform = `scaleX(${max > 0 ? Math.min(1, scrollY / max) : 0})`;
+      if (topo) {
+        topo.classList.toggle("rolou", scrollY > 8);
+        if (scrollY > ultimo + 2 && scrollY > 320) topo.classList.add("recolhido");
+        else if (scrollY < ultimo - 2) topo.classList.remove("recolhido");
+      }
+      ultimo = scrollY; pedido = false;
+    });
+  }, {passive: true});
+
+  // ---- conteúdo que aparece ao rolar ----
+  const io = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add("visto"); io.unobserve(e.target); }
+  }), {rootMargin: "0px 0px -6% 0px", threshold: .06}) : null;
+  window.fxRevelar = (sel, tipo) => document.querySelectorAll(sel).forEach(el => {
+    if (el.hasAttribute("data-revela")) return;
+    el.setAttribute("data-revela", tipo || "");
+    const irmaos = [...el.parentElement.children].filter(x => x.matches(sel));
+    el.style.setProperty("--atraso", (Math.min(Math.max(0, irmaos.indexOf(el)), 6) * .09) + "s");
+    if (io) io.observe(el); else el.classList.add("visto");
+  });
+  window.fxEntrada = (sel, base) => document.querySelectorAll(sel).forEach((el, i) => {
+    el.setAttribute("data-entra", ""); el.style.setProperty("--atraso", ((base || 0) + i * .12) + "s");
+  });
+
+  // ---- onda no ponto do toque ----
+  document.addEventListener("pointerdown", e => {
+    const b = e.target.closest(".bt, .chip, .tipo button, .vistas button, .atalho, .ti-op");
+    if (!b || reduz) return;
+    const r = b.getBoundingClientRect(), s = Math.max(r.width, r.height) * 2.4;
+    const o = document.createElement("span");
+    o.className = "onda";
+    o.style.cssText = `width:${s}px;height:${s}px;left:${e.clientX - r.left}px;top:${e.clientY - r.top}px`;
+    if (getComputedStyle(b).position === "static") b.style.position = "relative";
+    b.style.overflow = "hidden"; b.append(o);
+    setTimeout(() => o.remove(), 800);
+  });
+
+  // ---- perguntas que abrem e fecham deslizando ----
+  document.querySelectorAll("details").forEach(d => {
+    const s = d.querySelector("summary"); if (!s) return;
+    s.addEventListener("click", e => {
+      if (reduz || !d.animate) return;
+      e.preventDefault();
+      if (d._anim) d._anim.cancel();
+      const ini = d.offsetHeight;
+      if (d.open) {
+        const fim = s.offsetHeight + (d.offsetHeight - d.clientHeight);
+        d._anim = d.animate({height: [ini + "px", fim + "px"]}, {duration: 380, easing: "cubic-bezier(.4,0,.2,1)"});
+        d._anim.onfinish = () => { d.open = false; d._anim = null; };
+      } else {
+        d.open = true;
+        const fim = d.offsetHeight;
+        d._anim = d.animate({height: [ini + "px", fim + "px"]}, {duration: 460, easing: "cubic-bezier(.16,.84,.24,1)"});
+        d._anim.onfinish = () => { d._anim = null; };
+        const filhos = [...d.children].filter(x => x !== s);
+        filhos.forEach(f => f.animate && f.animate([{opacity: 0, transform: "translateY(-8px)"}, {opacity: 1, transform: "none"}], {duration: 460, easing: "ease-out"}));
+      }
+    });
+  });
+
+  // ---- números que rolam até o valor novo ----
+  window.fxNumero = (el, valor, fmt, dur) => {
+    if (typeof el === "string") el = document.getElementById(el);
+    if (!el) return;
+    const de = typeof el._v === "number" ? el._v : valor;
+    el._v = valor;
+    cancelAnimationFrame(el._raf);
+    if (reduz || de === valor) { el.textContent = fmt(valor); return; }
+    const t0 = performance.now(); dur = dur || 600;
+    const passo = t => {
+      const p = Math.min(1, (t - t0) / dur), k = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(de + (valor - de) * k);
+      if (p < 1) el._raf = requestAnimationFrame(passo);
+    };
+    el._raf = requestAnimationFrame(passo);
+  };
+
+  // ---- inclinação 3D que segue o mouse ----
+  window.fxInclinar = (sel, forca) => {
+    if (reduz || !matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    const f = forca || 1;
+    document.querySelectorAll(sel).forEach(el => {
+      el.classList.add("inclina");
+      el.addEventListener("pointermove", e => {
+        const r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+        el.style.transform = `perspective(1000px) rotateX(${(-y * 6 * f).toFixed(2)}deg) rotateY(${(x * 8 * f).toFixed(2)}deg) translateY(-4px)`;
+      });
+      el.addEventListener("pointerleave", () => { el.style.transform = ""; });
+    });
+  };
+
+  // ---- letras que sobem uma a uma ----
+  window.fxLetras = (el, base) => {
+    const txt = el.textContent; el.textContent = ""; el.classList.add("ti-letras"); el.setAttribute("aria-label", txt);
+    el.style.setProperty("--atraso-base", (base || 0) + "s");
+    [...txt].forEach((c, i) => { const s = document.createElement("span"); s.textContent = c === " " ? " " : c; s.style.setProperty("--i", i); s.setAttribute("aria-hidden", "true"); el.append(s); });
+  };
+
+  // ---- saída da tela de início ----
+  window.fxSairIntro = (dur, atrasoPronto) => {
+    const ti = document.getElementById("tela-inicio");
+    if (!ti || ti.classList.contains("saindo")) return;
+    ti.classList.add("saindo");
+    setTimeout(() => { raiz.classList.add("pronto"); dispatchEvent(new Event("fx-pronto")); }, reduz ? 0 : (atrasoPronto ?? dur * .45));
+    setTimeout(() => {
+      ti.hidden = true; raiz.classList.remove("intro-ativa"); scrollTo(0, 0);
+      const m = document.querySelector("main"); if (m) { m.setAttribute("tabindex", "-1"); m.focus({preventScroll: true}); }
+    }, reduz ? 60 : dur);
+  };
+  addEventListener("keydown", e => { if (e.key === "Escape") fxSairIntro(800); });
+})();
+</script>
+<script>
 // ===== Números usados na simulação (a empresa ajusta aqui) =====
 const ZAP = "5585900000000";   // número fictício
 const TARIFA = 0.98;           // R$ por kWh, com tributos (média)
@@ -360,19 +633,19 @@ function atualizar(valor, origem){
   if (origem !== "campo") $("conta").value = Math.round(v);
   if (origem !== "faixa") $("faixa").value = Math.min(3000, Math.max(100, v));
   const r = calcular(v), consumo = `${n0(r.kwh)} kWh`, calc = `${n0(r.kwh)} kWh × R$ ${num(TARIFA)}`;
-  $("r-hoje").textContent = brl(r.conta);
-  $("r-novo").textContent = brl(r.novo);
-  $("r-mes").textContent = brl(r.desconto);
-  $("r-ano").textContent = brl(r.desconto * 12);
+  fxNumero("r-hoje", r.conta, brl);
+  fxNumero("r-novo", r.novo, brl);
+  fxNumero("r-mes", r.desconto, brl);
+  fxNumero("r-ano", r.desconto * 12, brl);
   $("h-kwh").textContent = consumo; $("h-calc").textContent = calc;
-  $("h-energia").textContent = num(r.energia); $("h-fixo").textContent = num(r.fixo); $("h-total").textContent = brl(r.conta);
+  $("h-energia").textContent = num(r.energia); $("h-fixo").textContent = num(r.fixo); fxNumero("h-total", r.conta, brl);
   $("n-kwh").textContent = consumo; $("n-calc").textContent = calc;
   $("n-riscado").textContent = num(r.energia);
   $("n-cred").textContent = `${n0(r.kwh)} kWh de créditos da usina`;
   $("n-comp").textContent = "−" + num(r.energia);
-  $("n-fixo").textContent = num(r.fixo); $("n-dist").textContent = brl(r.fixo);
+  $("n-fixo").textContent = num(r.fixo); fxNumero("n-dist", r.fixo, brl);
   $("b-calc").textContent = calc; $("b-bruto").textContent = num(r.energia);
-  $("b-desc").textContent = "−" + num(r.desconto); $("b-total").textContent = brl(r.boleto);
+  $("b-desc").textContent = "−" + num(r.desconto); fxNumero("b-total", r.boleto, brl);
   const obs = [];
   if (v < 150) obs.push("Para contas abaixo de R$ 150 a economia é pequena. Vale analisar o histórico antes.");
   obs.push(`Tarifa média de R$ ${num(TARIFA)}/kWh com tributos. A proposta final considera 12 meses de histórico.`);
@@ -393,6 +666,50 @@ document.querySelectorAll(".vistas button").forEach(b => b.onclick = () => {
 const msg = "Olá! Vi o site da Luzeiro e gostaria de entender como funciona a energia por assinatura.";
 $("zap-topo").href = zap(msg);
 $("zap-rodape").href = zap(msg);
+</script>
+<script>
+// ================= tela de início e efeitos da Luzeiro =================
+(function(){
+  const r = calcular(420), tot = $("ti-total"), reduz = fxReduz;
+  tot._v = 420; tot.textContent = brl(420);
+  $("ti-selo").textContent = `−${brl(r.desconto)} por mês`;
+  const t = reduz ? 0 : 2700;
+  setTimeout(() => {
+    $("ti-energia").classList.add("riscado"); $("ti-cred").classList.add("on");
+    $("ti-rot").textContent = "Com a Luzeiro";
+    fxNumero(tot, r.novo, brl, 1300); tot.classList.add("caiu");
+  }, t);
+  setTimeout(() => $("ti-selo").classList.add("on"), reduz ? 0 : t + 1350);
+  setTimeout(() => $("tela-inicio").classList.add("fase2"), reduz ? 0 : t + 1700);
+  setTimeout(() => $("ti-entrar").focus({preventScroll: true}), reduz ? 0 : t + 1800);
+  $("ti-entrar").onclick = () => fxSairIntro(1200, 450);
+})();
+
+fxEntrada(".abertura .sobre, .abertura h1, .abertura .intro", .15);
+fxEntrada(".painel .entrada, .painel .lado-docs", .55);
+addEventListener("fx-pronto", () => {
+  fxRevelar(".secao .cab-sec, .passos li, .compara > div, .quem > div, .tabela, .faq details, .rodape .cab-sec, .rodape .grade > div, .legal");
+  fxRevelar(".conta", "imprime");
+  fxInclinar(".conta", .6);
+});
+
+// troca "Hoje" / "Com a Luzeiro" deslizando
+(function(){
+  const vistas = document.querySelector(".vistas"); vistas.dataset.ativo = "nova";
+  document.querySelectorAll(".vistas button").forEach(b => b.onclick = () => {
+    if (b.getAttribute("aria-pressed") === "true") return;
+    const vai = b.dataset.v, dir = vai === "hoje" ? -1 : 1;
+    const entra = vai === "hoje" ? $("v-hoje") : $("v-nova"), sai = vai === "hoje" ? $("v-nova") : $("v-hoje");
+    vistas.dataset.ativo = vai;
+    document.querySelectorAll(".vistas button").forEach(x => x.setAttribute("aria-pressed", x === b));
+    const mostra = () => {
+      sai.hidden = true; entra.hidden = false;
+      if (!fxReduz && entra.animate) entra.animate([{opacity: 0, transform: `translateX(${50 * dir}px)`}, {opacity: 1, transform: "none"}], {duration: 560, easing: "cubic-bezier(.16,.84,.24,1)"});
+    };
+    if (fxReduz || !sai.animate || getComputedStyle(sai).display === "none") return mostra();
+    sai.animate([{opacity: 1, transform: "none"}, {opacity: 0, transform: `translateX(${-50 * dir}px)`}], {duration: 240, easing: "ease-in"}).onfinish = mostra;
+  });
+})();
 </script>
 </body>
 </html>
