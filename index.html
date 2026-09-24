@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#10231C">
+<meta name="description" content="Luzeiro Energia · energia solar por assinatura no Ceará. Desconto na conta de luz sem instalar nada. Site de demonstração.">
+<title>Luzeiro Energia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --fundo:#EEF3F0;
+  --papel:#FFFFFF;
+  --tinta:#10231C;
+  --tinta-2:#4E625A;
+  --verde:#0F7A4F;
+  --verde-claro:#DDF0E6;
+  --sol:#F2A413;
+  --risco:#B8432F;
+  --linha:#D3DED8;
+  --display:"Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-padding-top:72px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--fundo);color:var(--tinta);font:400 17px/1.6 var(--display);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+a{color:var(--verde)}
+button,input{font:inherit;touch-action:manipulation}
+h1,h2,h3,p,ol,ul,dl,dd{margin:0}
+.wrap{max-width:1040px;margin-inline:auto;padding-inline:16px}
+:focus-visible{outline:3px solid var(--sol);outline-offset:2px}
+.demo{background:var(--tinta);color:#B9C9C1;font:500 .74rem/1.35 var(--mono);text-align:center;padding:6px 16px}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* topo */
+.topo{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(238,243,240,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--linha)}
+.topo .wrap{display:flex;align-items:center;gap:12px;height:62px}
+.marca{display:flex;align-items:center;gap:9px;color:var(--tinta);text-decoration:none;font:800 1.2rem/1 var(--display);letter-spacing:-.02em}
+.marca svg{flex:none}
+.menu{display:none;gap:22px;margin-left:auto;font-weight:500;font-size:.95rem}
+.menu a{color:var(--tinta-2);text-decoration:none}
+.menu a:hover{color:var(--tinta)}
+.bt{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:10px;border:0;font:700 1rem/1.1 var(--display);text-decoration:none;cursor:pointer;text-align:center}
+.bt:active{transform:translateY(1px)}
+.bt-verde{background:var(--verde);color:#fff}
+.bt-verde:hover{background:#0B6641}
+.bt-topo{margin-left:auto;min-height:40px;padding:0 14px;font-size:.9rem}
+@media (min-width:860px){.menu{display:flex}.bt-topo{margin-left:12px}}
+
+/* abertura */
+.abertura{padding-block:34px 18px}
+.abertura h1{font:800 clamp(2.15rem,8.4vw,3.9rem)/1.02 var(--display);letter-spacing:-.035em;max-width:16ch;text-wrap:balance}
+.abertura h1 em{font-style:normal;color:var(--verde)}
+.abertura .sub{margin-top:14px;max-width:52ch;color:var(--tinta-2);font-size:1.06rem}
+
+/* simulador = a própria conta de luz */
+.simulador{padding-bottom:40px}
+.entrada{background:var(--papel);border:1px solid var(--linha);border-radius:14px;padding:16px;display:grid;gap:10px}
+.entrada label{font-weight:600;font-size:.95rem}
+.valor{display:flex;align-items:center;gap:10px}
+.valor .rs{font:500 1.3rem/1 var(--mono);color:var(--tinta-2)}
+.valor input[type=number]{flex:1;min-width:0;width:100%;border:0;border-bottom:2px solid var(--tinta);background:transparent;font:600 2.3rem/1.1 var(--mono);color:var(--tinta);padding:2px 0;-moz-appearance:textfield}
+.valor input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+.valor input[type=number]:focus{outline:none;border-bottom-color:var(--verde)}
+.passo{flex:none;width:44px;height:44px;border-radius:10px;border:1px solid var(--linha);background:var(--fundo);font:600 1.3rem/1 var(--mono);color:var(--tinta);cursor:pointer}
+input[type=range]{width:100%;accent-color:var(--verde);height:28px}
+.escala{display:flex;justify-content:space-between;font:400 .78rem/1 var(--mono);color:var(--tinta-2)}
+
+.contas{display:grid;gap:14px;margin-top:16px}
+@media (min-width:820px){.contas{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}}
+.fatura{position:relative;background:var(--papel);border-radius:4px 4px 12px 12px;padding:22px 18px 18px;box-shadow:0 1px 0 var(--linha),0 12px 28px rgba(16,35,28,.07)}
+/* picote no topo, como papel de conta */
+.fatura::before{content:"";position:absolute;left:0;right:0;top:-7px;height:14px;background:radial-gradient(circle at 7px 7px,var(--fundo) 5px,transparent 5.5px) 0 0/14px 14px repeat-x}
+.fatura-cab{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-bottom:12px;border-bottom:1px dashed var(--linha)}
+.fatura-cab b{font:600 .78rem/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.fatura-cab span{font:400 .78rem/1.2 var(--mono);color:var(--tinta-2);letter-spacing:0;text-transform:none}
+.itens{display:grid;gap:10px;padding-block:14px}
+.item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:baseline;font-size:.95rem}
+.item small{grid-column:1/-1;color:var(--tinta-2);font-size:.82rem;line-height:1.35}
+.item .v{font:500 .98rem/1 var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.item .v s{color:var(--risco);text-decoration-thickness:2px}
+.item.sub{padding-left:12px;border-left:2px solid var(--linha)}
+.total{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding-top:12px;border-top:2px solid var(--tinta)}
+.total span{font-weight:700}
+.total .v{font:600 1.6rem/1 var(--mono);font-variant-numeric:tabular-nums}
+.fatura.nova{outline:2px solid var(--verde);outline-offset:-2px}
+.fatura.nova .fatura-cab b{color:var(--verde)}
+.carimbo{flex:none;transform:rotate(-5deg);margin-block:-6px;border:2.5px solid var(--sol);color:#9A6300;border-radius:8px;padding:6px 10px;font:600 .95rem/1.15 var(--mono);text-align:center;background:rgba(242,164,19,.08);pointer-events:none}
+.carimbo small{display:block;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase}
+.economia{margin-top:14px;background:var(--tinta);color:#fff;border-radius:12px;padding:16px 18px;display:grid;gap:12px}
+@media (min-width:820px){.economia{grid-template-columns:1fr auto;align-items:center}}
+.economia p{font-size:1.05rem;line-height:1.45}
+.economia b{font:600 1.15em/1 var(--mono);color:var(--sol);white-space:nowrap}
+.economia .bt{background:var(--sol);color:#2A1C00}
+.aviso{margin-top:10px;font-size:.84rem;color:var(--tinta-2);max-width:70ch}
+.alerta{margin-top:12px;border-left:3px solid var(--sol);background:#FFF6E0;padding:10px 12px;border-radius:0 8px 8px 0;font-size:.92rem}
+
+/* seções */
+.secao{padding-block:44px;border-top:1px solid var(--linha)}
+.secao h2{font:800 clamp(1.7rem,6vw,2.5rem)/1.08 var(--display);letter-spacing:-.03em;max-width:22ch;text-wrap:balance}
+.secao .lead{margin-top:10px;color:var(--tinta-2);max-width:58ch}
+
+.etapas{list-style:none;padding:0;margin-top:22px;display:grid;gap:0;counter-reset:e}
+@media (min-width:820px){.etapas{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}}
+.etapas li{counter-increment:e;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;padding-block:14px;border-top:1px solid var(--linha)}
+@media (min-width:820px){.etapas li{grid-template-columns:1fr;border-top:2px solid var(--tinta);padding-top:14px}}
+.etapas li::before{content:counter(e);grid-row:span 2;font:600 1rem/1 var(--mono);width:32px;height:32px;border-radius:50%;border:1.5px solid var(--tinta);display:grid;place-items:center}
+@media (min-width:820px){.etapas li::before{grid-row:auto;margin-bottom:6px}}
+.etapas b{font-size:1.05rem;line-height:1.3}
+.etapas p{color:var(--tinta-2);font-size:.94rem}
+
+.compara{display:grid;gap:14px;margin-top:22px}
+@media (min-width:820px){.compara{grid-template-columns:1fr 1fr}}
+.lado{background:var(--papel);border:1px solid var(--linha);border-radius:12px;padding:18px}
+.lado h3{font:700 .8rem/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--tinta-2);margin-bottom:10px}
+.lado.muda h3{color:var(--verde)}
+.lado ul{list-style:none;padding:0;display:grid;gap:10px}
+.lado li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:10px;font-size:.98rem}
+.lado li::before{content:"";width:10px;height:10px;margin-top:8px;border-radius:2px;background:var(--linha)}
+.lado.muda li::before{background:var(--verde)}
+
+.quem{display:grid;gap:10px;margin-top:20px}
+@media (min-width:820px){.quem{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.quem div{padding:16px 0;border-top:2px solid var(--tinta)}
+.quem b{display:block;font-size:1.05rem}
+.quem p{color:var(--tinta-2);font-size:.94rem;margin-top:4px}
+
+.tabela{margin-top:20px;overflow-x:auto;border:1px solid var(--linha);border-radius:12px;background:var(--papel)}
+table{width:100%;border-collapse:collapse;min-width:520px;font-size:.95rem}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--linha);white-space:nowrap}
+th{font:600 .74rem/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--tinta-2);background:#F6F9F7}
+td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right}
+th.n{text-align:right}
+tr:last-child td{border-bottom:0}
+.estado{display:inline-flex;align-items:center;gap:6px;font-size:.88rem}
+.estado::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--verde)}
+.estado.obra::before{background:var(--sol)}
+
+.faq{margin-top:18px;border-top:1px solid var(--linha)}
+.faq details{border-bottom:1px solid var(--linha)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:14px;padding:16px 0;font-weight:600;font-size:1.02rem}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font:500 1.4rem/1 var(--mono);color:var(--verde);flex:none}
+.faq details[open] summary::after{content:"−"}
+.faq details p{padding:0 0 16px;color:var(--tinta-2);max-width:66ch}
+
+.contato{background:var(--tinta);color:#E4ECE8;padding-block:40px 30px}
+.contato h2{font:800 clamp(1.7rem,6vw,2.5rem)/1.08 var(--display);letter-spacing:-.03em;color:#fff;max-width:20ch}
+.contato .grade{display:grid;gap:22px;margin-top:22px}
+@media (min-width:820px){.contato .grade{grid-template-columns:1.2fr 1fr 1fr}}
+.contato dt{font:600 .74rem/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#8FA79B;margin-bottom:6px}
+.contato dd{font-size:1rem}
+.contato .bt{background:var(--sol);color:#2A1C00;margin-top:4px}
+.rodape{margin-top:34px;padding-top:18px;border-top:1px solid rgba(255,255,255,.12);font:400 .8rem/1.5 var(--mono);color:#8FA79B}
+</style>
+</head>
+<body>
+
+<div class="demo">Site de demonstração · empresa fictícia · valores de exemplo</div>
+
+<header class="topo"><div class="wrap">
+  <a class="marca" href="#inicio" aria-label="Luzeiro Energia, início">
+    <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="13" r="7" fill="#F2A413"/><rect x="2" y="20" width="26" height="2.6" rx="1.3" fill="#10231C"/><rect x="6" y="24.5" width="18" height="2.6" rx="1.3" fill="#10231C"/></svg>
+    Luzeiro
+  </a>
+  <nav class="menu" aria-label="Seções"><a href="#como-funciona">Como funciona</a><a href="#usinas">Usinas</a><a href="#duvidas">Dúvidas</a></nav>
+  <a class="bt bt-verde bt-topo" id="zap-topo" target="_blank" rel="noopener">Enviar minha conta</a>
+</div></header>
+
+<main id="inicio">
+  <section class="abertura wrap">
+    <h1>Sua conta de luz <em>15% mais barata</em>, sem instalar nada.</h1>
+    <p class="sub">A energia sai das nossas usinas solares no Vale do Jaguaribe e entra como crédito na sua conta da distribuidora. Sem obra, sem placa no telhado e sem taxa de adesão.</p>
+  </section>
+
+  <section class="simulador wrap" aria-labelledby="sim-titulo">
+    <h2 id="sim-titulo" hidden>Simule seu desconto</h2>
+    <div class="entrada">
+      <label for="conta">Quanto veio sua última conta de luz?</label>
+      <div class="valor">
+        <button type="button" class="passo" id="menos" aria-label="Diminuir R$ 10">−</button>
+        <span class="rs">R$</span>
+        <input id="conta" type="number" inputmode="decimal" min="80" max="20000" step="10" value="420">
+        <button type="button" class="passo" id="mais" aria-label="Aumentar R$ 10">+</button>
+      </div>
+      <input id="faixa" type="range" min="100" max="3000" step="10" value="420" aria-label="Valor da conta de luz">
+      <div class="escala"><span>R$ 100</span><span>R$ 3.000</span></div>
+    </div>
+
+    <div class="contas">
+      <article class="fatura" aria-label="Sua conta hoje">
+        <div class="fatura-cab"><b>Hoje</b><span>1 conta por mês</span></div>
+        <div class="itens">
+          <div class="item"><span>Energia consumida</span><span class="v" id="h-energia"></span><small id="h-kwh"></small></div>
+          <div class="item"><span>Taxa mínima e iluminação pública</span><span class="v" id="h-fixo"></span></div>
+        </div>
+        <div class="total"><span>Total</span><span class="v" id="h-total"></span></div>
+      </article>
+
+      <article class="fatura nova" aria-label="Sua conta com a Luzeiro">
+        <div class="fatura-cab"><b>Com a Luzeiro<br><span>2 contas por mês</span></b><div class="carimbo" aria-hidden="true"><small>economia</small><span id="carimbo"></span></div></div>
+        <div class="itens">
+          <div class="item"><span>Conta da distribuidora</span><span class="v" id="n-dist"></span><small>Fica só a taxa mínima e a iluminação pública.</small></div>
+          <div class="item sub"><span>Energia consumida</span><span class="v"><s id="n-riscado"></s> R$ 0,00</span><small>Paga com os créditos da usina.</small></div>
+          <div class="item"><span>Boleto Luzeiro</span><span class="v" id="n-boleto"></span><small>A mesma energia, com 15% de desconto.</small></div>
+        </div>
+        <div class="total"><span>Total</span><span class="v" id="n-total"></span></div>
+      </article>
+    </div>
+
+    <div class="economia">
+      <p>Você passa a pagar <b id="e-mes"></b> a menos por mês. Em um ano, são <b id="e-ano"></b>.</p>
+      <a class="bt" id="zap-sim" target="_blank" rel="noopener">Enviar minha conta pelo WhatsApp</a>
+    </div>
+    <p class="alerta" id="alerta" hidden>Com conta abaixo de R$ 150, o desconto fica pequeno. Mande a sua mesmo assim: a gente confere o histórico de consumo e diz se vale a pena.</p>
+    <p class="aviso">Simulação com tarifa média de R$ 0,98 por kWh e 15% de desconto sobre a energia compensada. A proposta final é feita a partir do histórico de 12 meses da sua conta.</p>
+  </section>
+
+  <section class="secao" id="como-funciona"><div class="wrap">
+    <h2>Como funciona, do primeiro contato à primeira conta com desconto</h2>
+    <ol class="etapas">
+      <li><b>Você manda uma foto da conta</b><p>Pelo WhatsApp. Conferimos o consumo dos últimos 12 meses e enviamos a proposta no mesmo dia útil.</p></li>
+      <li><b>Assina o contrato pelo celular</b><p>Assinatura digital. Sem taxa de adesão e sem multa: para sair, basta avisar com 90 dias.</p></li>
+      <li><b>A distribuidora cadastra sua conta</b><p>Nós fazemos o pedido. Os créditos começam a aparecer na sua conta em 30 a 90 dias.</p></li>
+      <li><b>Todo mês, você paga menos</b><p>A conta da distribuidora cai para a taxa mínima e o boleto da Luzeiro vem com o desconto.</p></li>
+    </ol>
+  </div></section>
+
+  <section class="secao"><div class="wrap">
+    <h2>O que muda na sua casa? Só o valor.</h2>
+    <p class="lead">A energia continua chegando pelo mesmo fio. O que muda é de onde ela vem e quanto você paga por ela.</p>
+    <div class="compara">
+      <div class="lado"><h3>Continua igual</h3><ul>
+        <li>O medidor, a fiação e a qualidade da energia.</li>
+        <li>A conta da distribuidora, que continua chegando, só que menor.</li>
+        <li>Se faltar luz, você chama a distribuidora, como sempre.</li>
+      </ul></div>
+      <div class="lado muda"><h3>Muda</h3><ul>
+        <li>A energia que você usa é compensada por créditos gerados na nossa usina.</li>
+        <li>Chega um boleto da Luzeiro, com vencimento no dia que você escolher.</li>
+        <li>Somando as duas contas, você paga menos do que paga hoje.</li>
+      </ul></div>
+    </div>
+    <div class="quem">
+      <div><b>Casas e apartamentos</b><p>Contas a partir de R$ 150, próprias ou alugadas, em qualquer cidade atendida pela distribuidora do Ceará.</p></div>
+      <div><b>Comércios e escritórios</b><p>Padarias, clínicas, lojas e escritórios em baixa tensão. Várias contas no mesmo CNPJ entram num contrato só.</p></div>
+      <div><b>Condomínios</b><p>As áreas comuns (elevador, bombas e iluminação) costumam ser a maior despesa fixa do condomínio.</p></div>
+    </div>
+  </div></section>
+
+  <section class="secao" id="usinas"><div class="wrap">
+    <h2>Nossas usinas</h2>
+    <p class="lead">Usinas próprias no Vale do Jaguaribe, uma das regiões com mais sol do Brasil. A energia gerada é dividida entre os assinantes na proporção do consumo de cada um.</p>
+    <div class="tabela"><table>
+      <thead><tr><th>Usina</th><th>Cidade</th><th class="n">Potência</th><th class="n">Placas</th><th>Situação</th></tr></thead>
+      <tbody>
+        <tr><td>Luzeiro I</td><td>Tabuleiro do Norte</td><td class="n">2,4 MWp</td><td class="n">3.936</td><td><span class="estado">Gerando desde 2024</span></td></tr>
+        <tr><td>Luzeiro II</td><td>Morada Nova</td><td class="n">1,8 MWp</td><td class="n">2.952</td><td><span class="estado">Gerando desde 2025</span></td></tr>
+        <tr><td>Luzeiro III</td><td>Limoeiro do Norte</td><td class="n">3,0 MWp</td><td class="n">4.920</td><td><span class="estado obra">Em construção</span></td></tr>
+      </tbody>
+    </table></div>
+  </div></section>
+
+  <section class="secao" id="duvidas"><div class="wrap">
+    <h2>Dúvidas frequentes</h2>
+    <div class="faq">
+      <details><summary>Preciso instalar alguma coisa?</summary><p>Não. Nada muda na sua casa ou empresa. A energia é gerada na usina e compensada na sua conta pela própria distribuidora.</p></details>
+      <details><summary>E se num mês a usina gerar menos?</summary><p>Os créditos que sobram nos meses de mais sol ficam guardados na sua conta por até 60 meses e cobrem os meses mais fracos. Se ainda assim faltar crédito, essa parte é cobrada normalmente pela distribuidora, e o boleto da Luzeiro diminui na mesma medida.</p></details>
+      <details><summary>Moro de aluguel. Posso assinar?</summary><p>Pode. A conta precisa estar no seu nome. Se você se mudar, o contrato vai junto para o novo endereço.</p></details>
+      <details><summary>Isso é permitido?</summary><p>Sim. A geração compartilhada é regulada pela Lei 14.300/2022 e pelas regras da ANEEL. Os créditos aparecem na sua conta da distribuidora como energia compensada.</p></details>
+      <details><summary>Tem fidelidade ou multa?</summary><p>Não. Para cancelar, basta avisar com 90 dias de antecedência, que é o prazo que a distribuidora leva para tirar sua conta do rateio da usina.</p></details>
+      <details><summary>Quanto tempo leva para começar?</summary><p>De 30 a 90 dias depois da assinatura, dependendo do ciclo de leitura da sua conta. Até lá, você paga a conta normalmente.</p></details>
+    </div>
+  </div></section>
+</main>
+
+<footer class="contato"><div class="wrap">
+  <h2>Mande a foto da sua conta. A proposta sai no mesmo dia.</h2>
+  <dl class="grade">
+    <div><dt>WhatsApp</dt><dd class="num">(85) 90000-0000</dd><a class="bt" id="zap-rodape" target="_blank" rel="noopener">Falar pelo WhatsApp</a></div>
+    <div><dt>Escritório</dt><dd>Av. Santos Dumont, 3000, sala 1203<br>Aldeota, Fortaleza (CE)</dd></div>
+    <div><dt>Atendimento</dt><dd>Segunda a sexta, das 8h às 18h<br>Sábado, das 8h às 12h</dd></div>
+  </dl>
+  <p class="rodape">Luzeiro Energia · geração compartilhada de energia solar no Ceará</p>
+</div></footer>
+
+<script>
+// ===== Números usados na simulação (a empresa ajusta aqui) =====
+const ZAP = "5585900000000";   // número fictício
+const TARIFA = 0.98;           // R$ por kWh, com impostos (média)
+const DESCONTO = 0.15;         // desconto sobre a energia compensada
+const FIXO_MIN = 58;           // taxa mínima + iluminação pública (R$)
+const FIXO_PCT = 0.13;         // em contas maiores, a parte que não é compensada
+// ===============================================================
+
+const $ = id => document.getElementById(id);
+const brl = v => v.toLocaleString("pt-BR", {style:"currency", currency:"BRL"});
+const zap = t => `https://wa.me/${ZAP}?text=${encodeURIComponent(t)}`;
+
+function calcular(conta){
+  const fixo = Math.min(conta, Math.max(FIXO_MIN, conta * FIXO_PCT));
+  const energia = conta - fixo;
+  const boleto = energia * (1 - DESCONTO);
+  const novo = fixo + boleto;
+  return {conta, fixo, energia, boleto, novo, economia: conta - novo, kwh: Math.round(energia / TARIFA)};
+}
+
+function atualizar(valor, origem){
+  let v = Number(valor);
+  if (!isFinite(v) || v <= 0) return;
+  const r = calcular(v);
+  if (origem !== "campo") $("conta").value = Math.round(v);
+  if (origem !== "faixa") $("faixa").value = Math.min(3000, Math.max(100, v));
+  $("h-energia").textContent = brl(r.energia);
+  $("h-kwh").textContent = `${r.kwh.toLocaleString("pt-BR")} kWh a R$ ${TARIFA.toFixed(2).replace(".", ",")}`;
+  $("h-fixo").textContent = brl(r.fixo);
+  $("h-total").textContent = brl(r.conta);
+  $("n-dist").textContent = brl(r.fixo);
+  $("n-riscado").textContent = brl(r.energia);
+  $("n-boleto").textContent = brl(r.boleto);
+  $("n-total").textContent = brl(r.novo);
+  $("carimbo").textContent = "−" + brl(r.economia);
+  $("e-mes").textContent = brl(r.economia);
+  $("e-ano").textContent = brl(r.economia * 12);
+  $("alerta").hidden = v >= 150;
+  $("zap-sim").href = zap(`Olá! Vi o site da Luzeiro. Minha conta de luz vem em torno de ${brl(v)} e queria receber uma proposta.`);
+}
+
+$("conta").addEventListener("input", e => atualizar(e.target.value, "campo"));
+$("conta").addEventListener("blur", e => { if (!(Number(e.target.value) > 0)) atualizar(420); });
+$("faixa").addEventListener("input", e => atualizar(e.target.value, "faixa"));
+$("menos").onclick = () => atualizar(Math.max(80, (Number($("conta").value) || 420) - 10));
+$("mais").onclick = () => atualizar((Number($("conta").value) || 420) + 10);
+
+const msg = "Olá! Vi o site da Luzeiro e queria saber como funciona a energia por assinatura.";
+$("zap-topo").href = zap(msg);
+$("zap-rodape").href = zap(msg);
+atualizar(420);
+</script>
+</body>
+</html>
